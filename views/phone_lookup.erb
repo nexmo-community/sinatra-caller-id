@@ -1,0 +1,11 @@
+<h1>Number Insight</h1>
+
+<table>
+  <% @insight.each do |key, value| %>
+    <tr>
+      <td> <%= key.split("_").map(&:capitalize).join(' ') %>: </td>
+      <td> <%= value %> </td>
+    </tr>
+  <% end %>
+
+</table>

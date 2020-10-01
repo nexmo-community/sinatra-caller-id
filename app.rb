@@ -1,19 +1,29 @@
-require "sinatra"
-require "sinatra/reloader"
-require "json"
-require "pony"
+require 'dotenv/load'
+require 'sinatra/base'
+require 'sinatra/reloader'
+require 'json'
+require 'vonage'
+require 'pony'
 
-require_relative 'nexmo.rb'
-
+# CallerId App for getting details about a phone number.
 class CallerId < Sinatra::Base
+  register Sinatra::Reloader
+
+  configure do
+    $vonage = Vonage::Client.new(
+      api_key: ENV['VONAGE_API_KEY'],
+      api_secret: ENV['VONAGE_API_SECRET']
+    )
+  end
+
   get '/' do
     erb :phone_form
   end
 
   post '/lookup' do
-		@insight = Nexmo.lookup(params["phone"], "#{request.base_url}/nexmo_insights?email=#{params["email"]}")
-		erb	:phone_lookup
-	end
+    @insight = $vonage.number_insight.advanced(number: params['phone'])
+    erb :phone_lookup
+  end
 
   post '/nexmo_insights' do
     phone_info = request.body.read
@@ -63,6 +73,5 @@ class CallerId < Sinatra::Base
         end
       html << "</table>"
     end
-
-  CallerId.run!
+  run! if app_file == $0
 end

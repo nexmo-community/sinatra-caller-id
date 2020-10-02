@@ -47,12 +47,12 @@ class CallerId < Sinatra::Base
           :via_options => {
             :address              => "smtp.gmail.com",
             :port                 => 587,
-            :user_name            => 'my@email.com',
-            :password             => MY_PASSWORD,
+            :user_name            => ENV['GMAIL_USERNAME'],
+            :password             => ENV['GMAIL_PASSWORD'],
             :authentication       => 'plain',
             :enable_starttls_auto => true
           },
-      		:from => 'my@email.com',
+      		:from => ENV['GMAIL_USERNAME'],
       		:subject => "Nexmo insight for #{JSON.parse(phone_info)["national_format_number"]}",
       		:headers => { 'Content-Type' => "text/html" },
       		:body => to_html_string(phone_info))

@@ -1,0 +1,50 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    dotenv (2.7.6)
+    jwt (2.2.2)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
+    mini_mime (1.0.2)
+    multi_json (1.15.0)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    nexmo-jwt (0.1.1)
+      jwt (~> 2)
+    pony (1.13.1)
+      mail (>= 2.0)
+    rack (2.2.3)
+    rack-protection (2.1.0)
+      rack
+    ruby2_keywords (0.0.2)
+    sinatra (2.1.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.1.0)
+      tilt (~> 2.0)
+    sinatra-contrib (2.1.0)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.1.0)
+      sinatra (= 2.1.0)
+      tilt (~> 2.0)
+    sorbet-runtime (0.5.5929)
+    tilt (2.0.10)
+    vonage (7.2.0)
+      nexmo-jwt (~> 0.1.1)
+      sorbet-runtime (~> 0.5)
+      zeitwerk (~> 2, >= 2.2)
+    zeitwerk (2.4.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  dotenv
+  pony
+  sinatra
+  sinatra-contrib
+  vonage
+
+BUNDLED WITH
+   2.1.4

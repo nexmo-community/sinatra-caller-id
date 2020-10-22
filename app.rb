@@ -8,20 +8,17 @@ require 'pony'
 # CallerId App for getting details about a phone number.
 class CallerId < Sinatra::Base
   register Sinatra::Reloader
-
-  configure do
-    $vonage = Vonage::Client.new(
-      api_key: ENV['VONAGE_API_KEY'],
-      api_secret: ENV['VONAGE_API_SECRET']
-    )
-  end
+  set :vonage_api_key, ENV['VONAGE_API_KEY']
+  set :vonage_api_secret, ENV['VONAGE_API_SECRET']
+  set :gmail_username, ENV['GMAIL_USERNAME']
+  set :gmail_password, ENV['GMAIL_PASSWORD']
 
   get '/' do
     erb :phone_form
   end
 
   post '/lookup' do
-    @insight = $vonage.number_insight.advanced(number: params['phone'])
+    @insight = vonage.number_insight.advanced(number: params['phone'])
     erb :phone_lookup
   end
 
@@ -39,6 +36,13 @@ class CallerId < Sinatra::Base
     status 200
   end
 
+  def vonage
+    @vonage ||= Vonage::Client.new(
+      api_key: settings.vonage_api_key,
+      api_secret: settings.vonage_api_secret
+    )
+  end
+
   def email_insight(phone_info, email)
     Pony.mail(
       to: email,
@@ -46,8 +50,7 @@ class CallerId < Sinatra::Base
       via_options: {
         address: 'smtp.gmail.com',
         port: 587,
-        user_name: ENV['GMAIL_USERNAME'],
-        password: ENV['GMAIL_PASSWORD'],
+        user_name: settings.gmail_username, password: settings.gmail_password,
         authentication: 'plain',
         enable_starttls_auto: true
       },
